@@ -36,6 +36,14 @@ Amb l'entrada en vigor del **Reial Decret-llei 15/2013**, el Govern espanyol va 
 
 ---
 
+### 4. Despeses de Manteniment Ordinari (OPEX) vs. Inversions (CAPEX)
+A més de les inversions en noves infraestructures i millores (CAPEX registrat a l'Estat de Fluxos d'Efectiu), s'ha incorporat l'anàlisi de la **despesa corrent en manteniment i conservació** (OPEX) a partir de la memòria de comptes anuals d'ADIF (nota de *Serveis Exteriors*, partides de *Reparacions i conservació de la infraestructura* i *Altres reparacions*):
+* **Evolució del Gasto**: Creix de **413,58 M€** el 2011 fins a **655,80 M€** el 2025 (+58,6% corrent; +21,2% en termes reals deflactat per IPC).
+* **Manteniment per km de xarxa**: Augmenta de **43.640 €/km** (2011) a **56.185 €/km** (2025) en euros constants (+28,7% real).
+* **Manteniment per viatger**: Es manté extraordinàriament estable al voltant de **0,80 € – 0,94 € per viatger**, amb l'única excepció del pic de **1,58 €** el 2020 a causa del confinament per la COVID-19 (les despeses fixes de manteniment es van mantenir mentre el volum d'usuaris es va enfonsar).
+
+---
+
 ## 📊 Taula Resum Consolidada (Espanya: 2011 – 2025)
 
 | Any | ADIF Convencional (M€) | ADIF Alta Velocitat (M€) | **TOTAL CORRENT (M€)** | **TOTAL CONSTANT 2025 (M€)** | IPC Mitjà INE | Factor IPC | Xarxa Total RFIG (km) | Inversió / km (€ Const.) | Viatgers (M) | Inversió / Viatger (€ Const.) |
@@ -83,7 +91,10 @@ Amb l'entrada en vigor del **Reial Decret-llei 15/2013**, el Govern espanyol va 
     ├── 1_evolucion_inversion_inflacion_2011_2025.png
     ├── 2_inversion_por_km_red_2011_2025.png
     ├── 3_inversion_por_pasajero_2011_2025.png
-    └── 4_dashboard_analisis_completo.png
+    ├── 4_dashboard_analisis_completo.png
+    ├── 5_comparativa_inversion_mantenimiento_2011_2025.png
+    ├── 6_evolucion_gastos_mantenimiento_2011_2025.png
+    └── grafico_corregido_comparativa_adif.png
 ```
 
 ---
@@ -105,3 +116,4 @@ Totes les dades s'han extret exclusivament d'organismes oficials del Govern d'Es
 
 Anàlisi econòmica, consolidació comptable i desenvolupament realitzat per:  
 **autor: [@bcnopenmind](https://github.com/bcnopenmind)**
+
