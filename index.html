@@ -193,6 +193,7 @@
             </p>
         </div>
 
+        
         <!-- Charts Grid (Responsive on Mobile) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
             
@@ -284,6 +285,99 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- Sección: Gráfico Corregido Interactivo en Fondo Azul (ADIF + ADIF AV) -->
+        <div class="bg-slate-800/80 border border-sky-500/40 rounded-2xl p-4 sm:p-7 shadow-2xl space-y-5">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-700/80 pb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-chart-line"></i> Inversión 2011-2025 (PP-PSOE)
+                        </span>
+                        <span class="text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1 rounded border border-slate-700/60 font-mono">Fondo Azul Slate &bull; 100% Interactivo</span>
+                    </div>
+                    <h3 class="text-base sm:text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                        <span>5. Inversión 2011&ndash;2025 (PP-PSOE)</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 mt-0.5">Pasa el cursor o pulsa con el dedo sobre las barras y puntos para ver los importes exactos, notas políticas de gobierno e inversión constante.</p>
+                </div>
+                
+                <div class="flex items-center gap-2 self-stretch sm:self-auto">
+                    <button id="btnVerInfografia" onclick="toggleVistaGrafico()" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs px-3 py-2 rounded-lg border border-slate-600 shadow transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-image"></i> <span id="txtBtnVista">Ver Imagen HD</span>
+                    </button>
+                    <a href="graficos/grafico_corregido_comparativa_adif.png" download class="bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5 justify-center">
+                        <i class="fa-solid fa-download"></i> Descargar HD
+                    </a>
+                </div>
+            </div>
+
+            <!-- Panel Interactivo de 2 Canvases en Azul Slate (Chart.js) -->
+            <div id="contenedorInteractivo" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                
+                <!-- Panel Izquierdo: 2011-2017 -->
+                <div class="bg-slate-900/80 border border-sky-800/50 rounded-xl p-4 flex flex-col justify-between shadow-inner">
+                    <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-800">
+                        <div>
+                            <span class="text-xs font-bold text-sky-400 block uppercase tracking-wide">Etapa 2011 &ndash; 2017</span>
+                            <span class="text-[11px] text-slate-400">2011 Zapatero (PSOE) / 2012-2017 Rajoy (PP)</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-rose-400 bg-rose-950/60 border border-rose-800/60 px-2 py-0.5 rounded">
+                            Caída Real: -61,3% (cto.)
+                        </span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartEtapa1"></canvas>
+                    </div>
+                    <div class="mt-2 text-[11px] text-slate-400 border-t border-slate-800/80 pt-2 flex justify-between">
+                        <span>Punto de partida 2011: 3.371 M€ (Zapatero)</span>
+                        <span class="text-sky-400 font-semibold">Suelo inversor: 2016</span>
+                    </div>
+                </div>
+
+                <!-- Panel Derecho: 2018-2025 -->
+                <div class="bg-slate-900/80 border border-rose-800/50 rounded-xl p-4 flex flex-col justify-between shadow-inner">
+                    <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-800">
+                        <div>
+                            <span class="text-xs font-bold text-rose-400 block uppercase tracking-wide">Etapa 2018 &ndash; 2025</span>
+                            <span class="text-[11px] text-slate-400">2018 Transición PGE (PP) / 2019-2025 Sánchez (PSOE)</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded">
+                            Subida Real: +125,2% (cto.)
+                        </span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartEtapa2"></canvas>
+                    </div>
+                    <div class="mt-2 text-[11px] text-slate-400 border-t border-slate-800/80 pt-2 flex justify-between">
+                        <span>Récord 2025: 4.306 M€ (Fondos NextGen)</span>
+                        <span class="text-rose-400 font-semibold">2025 cto. < 2011 cto.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contenedor Imagen HD con fondo azul (oculto por defecto) -->
+            <div id="contenedorImagenHD" class="hidden rounded-xl overflow-hidden border border-slate-700 bg-slate-900 p-2 shadow-inner">
+                <img src="graficos/grafico_corregido_comparativa_adif.png" alt="Gráfico Corregido Fondo Azul" class="w-full h-auto rounded-lg">
+            </div>
+
+            <!-- Resumen metodológico de las 3 correcciones esenciales -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+                <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-sky-400 block font-bold"><i class="fa-solid fa-check"></i> 1. Desglose Real de Inversión (CAPEX)</strong>
+                    <p class="text-slate-400 text-[11px]">Se elimina el gasto corriente de mantenimiento ordinario (OPEX). Las barras muestran únicamente la inversión en obras e infraestructura nueva del Grupo ADIF.</p>
+                </div>
+                <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-amber-400 block font-bold"><i class="fa-solid fa-check"></i> 2. Efecto Inflación (Línea Naranja)</strong>
+                    <p class="text-slate-400 text-[11px]">La línea en euros constantes deflactada con el IPC del INE demuestra que el poder adquisitivo real de 2025 (4.306 M€) aún no supera el máximo de 2011 (4.411 M€ constantes).</p>
+                </div>
+                <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-emerald-400 block font-bold"><i class="fa-solid fa-check"></i> 3. Cronología Política Exacta</strong>
+                    <p class="text-slate-400 text-[11px]">Se aclara que 2011 fue gestionado por Rodríguez Zapatero y que 2018 operó con los presupuestos de Montoro (PP), neutralizando atribuciones sesgadas.</p>
+                </div>
+            </div>
         </div>
 
         <!-- Master Data Table Section (Mobile Responsive with Scroll Indicator) -->
@@ -823,6 +917,175 @@
                 }
             }
         });
+    
+        // ==========================================
+        // GRÁFICOS INTERACTIVOS CORREGIDOS (2 PANELES)
+        // ==========================================
+        const yearsEtapa1 = [2011, 2012, 2013, 2014, 2015, 2016, 2017];
+        const labelsEtapa1 = ['2011\n(Zapatero)', '2012', '2013', '2014', '2015', '2016\n(Suelo)', '2017'];
+        const convEtapa1 = [3371.3, 2972.8, 308.5, 312.6, 193.2, 239.6, 291.1];
+        const avEtapa1 = [0.0, 0.0, 2540.0, 2192.0, 1781.0, 1105.0, 1346.0];
+        const cstEtapa1 = [4411.0, 3796.7, 3587.4, 3159.2, 2502.7, 1708.0, 2039.6];
+
+        new Chart(document.getElementById('chartEtapa1'), {
+            type: 'bar',
+            data: {
+                labels: labelsEtapa1,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Total Constante 2025',
+                        data: cstEtapa1,
+                        borderColor: '#f97316',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#f97316',
+                        pointRadius: 4,
+                        tension: 0.2,
+                        order: 1
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Convencional',
+                        data: convEtapa1,
+                        backgroundColor: '#0284c7',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 3
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Alta Velocidad',
+                        data: avEtapa1,
+                        backgroundColor: '#38bdf8',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 10 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            footer: function(tooltipItems) {
+                                const yr = yearsEtapa1[tooltipItems[0].dataIndex];
+                                if (yr === 2011) return 'Gobierno: Rodríguez Zapatero (PSOE)';
+                                if (yr === 2016) return 'Suelo del ciclo inversor postcrisis';
+                                return 'Gobierno: Mariano Rajoy (PP)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize } },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 5200,
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v + ' M€' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        const yearsEtapa2 = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+        const labelsEtapa2 = ['2018\n(Transición)', '2019', '2020', '2021', '2022', '2023', '2024', '2025\n(Récord)'];
+        const convEtapa2 = [253.4, 414.0, 473.3, 470.1, 660.3, 1118.2, 1484.0, 2022.5];
+        const avEtapa2 = [1307.0, 1200.0, 1273.0, 1090.0, 1553.0, 1974.0, 2459.0, 2283.0];
+        const cstEtapa2 = [1912.0, 1964.0, 2131.8, 1847.4, 2418.0, 3262.9, 4048.5, 4305.5];
+
+        new Chart(document.getElementById('chartEtapa2'), {
+            type: 'bar',
+            data: {
+                labels: labelsEtapa2,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Total Constante 2025',
+                        data: cstEtapa2,
+                        borderColor: '#f97316',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#f97316',
+                        pointRadius: 4,
+                        tension: 0.2,
+                        order: 1
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Conv. / Cercanías',
+                        data: convEtapa2,
+                        backgroundColor: '#e11d48',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 3
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Alta Velocidad',
+                        data: avEtapa2,
+                        backgroundColor: '#fb7185',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 10 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            footer: function(tooltipItems) {
+                                const yr = yearsEtapa2[tooltipItems[0].dataIndex];
+                                if (yr === 2018) return 'Transición: Presupuestos aprobados por el PP';
+                                if (yr >= 2021) return 'Gobierno Sánchez + Fons NextGenerationEU';
+                                return 'Gobierno: Pedro Sánchez (PSOE)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize } },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 5200,
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v + ' M€' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        function toggleVistaGrafico() {
+            const contInt = document.getElementById('contenedorInteractivo');
+            const contImg = document.getElementById('contenedorImagenHD');
+            const txtBtn = document.getElementById('txtBtnVista');
+            if (contInt.classList.contains('hidden')) {
+                contInt.classList.remove('hidden');
+                contImg.classList.add('hidden');
+                txtBtn.textContent = 'Ver Imagen HD';
+            } else {
+                contInt.classList.add('hidden');
+                contImg.classList.remove('hidden');
+                txtBtn.textContent = 'Ver Interactivo';
+            }
+        }
+
     </script>
 </body>
 </html>
