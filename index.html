@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Inversión Ferroviaria en España (2011-2025) | Autor: @bcnopenmind</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '420px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f172a;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar for mobile friendly table */
+        .custom-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Watermark styling */
+        .watermark-badge {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Top Mobile-Friendly Header -->
+    <header class="bg-slate-950/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h1 class="text-base sm:text-xl font-black text-white tracking-tight flex items-center gap-2">
+                        <span>Ferrocarril España</span>
+                        <span class="text-xs bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded border border-sky-500/30 font-semibold">2011 &ndash; 2025</span>
+                    </h1>
+                </div>
+                
+                <!-- Autor Pill Prominente en Móvil -->
+                <div class="sm:hidden flex items-center gap-1.5 bg-gradient-to-r from-sky-600/30 to-purple-600/30 border border-sky-400/40 px-2.5 py-1 rounded-full">
+                    <i class="fa-solid fa-user-pen text-sky-400 text-xs"></i>
+                    <span class="text-[11px] font-bold text-sky-300">@bcnopenmind</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                <!-- Autor en Desktop / Tablet -->
+                <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700/80 px-3 py-1.5 rounded-lg shadow-inner">
+                    <i class="fa-solid fa-fingerprint text-sky-400 text-sm"></i>
+                    <span class="text-xs text-slate-400">Autor:</span>
+                    <strong class="text-xs font-bold text-sky-300">@bcnopenmind</strong>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <a href="ADIF_Inversion_Ferroviaria_2011_2025.xlsx" download 
+                       class="flex-1 sm:flex-none justify-center bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-excel text-sm"></i> <span>Excel</span>
+                    </a>
+                    <a href="ADIF_Inversion_Ferroviaria_2011_2025.csv" download 
+                       class="flex-1 sm:flex-none justify-center bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-semibold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-csv text-sm"></i> <span>CSV</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        
+        <!-- Hero Banner with Author Signature -->
+        <div class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-sky-950/80 to-slate-900 border border-slate-800 p-5 sm:p-8 rounded-2xl shadow-2xl">
+            <!-- Background watermark -->
+            <div class="absolute -right-8 -bottom-10 text-slate-800/30 text-7xl sm:text-9xl font-black select-none pointer-events-none">
+                @bcnopenmind
+            </div>
+            
+            <div class="relative z-10 space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-shield-halved"></i> Datos Oficiales Auditados IGAE &bull; INE
+                </div>
+                <h2 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    Inversión Ferroviaria Oficial en España (2011 &ndash; 2025)
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
+                    Análisis económico y presupuestario del <strong>Grupo ADIF</strong> (ADIF Convencional + ADIF Alta Velocidad). 
+                    Ajuste dinámico por inflación con el <strong>IPC oficial del INE</strong> (Base 2025 = 100), 
+                    ratios de intensidad por <strong>KM de red en servicio</strong> y por <strong>número anual de viajeros</strong>.
+                </p>
+                
+                <div class="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-400">
+                    <span class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60">
+                        <i class="fa-solid fa-user-astronaut text-sky-400"></i> Autor: <strong class="text-sky-300">@bcnopenmind</strong>
+                    </span>
+                    <span class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60">
+                        <i class="fa-regular fa-calendar-check text-emerald-400"></i> 15 Ejercicios Consolidados
+                    </span>
+                    <span class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60">
+                        <i class="fa-solid fa-mobile-screen text-purple-400"></i> Optimizado para iPhone & Android
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Key Metrics Cards (Optimized for Mobile Grids) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            
+            <div class="bg-slate-800/70 backdrop-blur border border-slate-700/70 rounded-xl p-3.5 sm:p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">Inversión Acumulada</span>
+                    <div class="text-lg sm:text-2xl font-black text-white mt-1">36,688 M€</div>
+                </div>
+                <div class="text-[10px] sm:text-xs text-sky-400 font-medium mt-2 pt-2 border-t border-slate-700/50">
+                    Constante 2025: <strong class="text-white">43,095 M€</strong>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/70 backdrop-blur border border-slate-700/70 rounded-xl p-3.5 sm:p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">Inversión Récord 2025</span>
+                    <div class="text-lg sm:text-2xl font-black text-emerald-400 mt-1">4,306 M€</div>
+                </div>
+                <div class="text-[10px] sm:text-xs text-emerald-300/80 font-medium mt-2 pt-2 border-t border-slate-700/50 truncate">
+                    Conv.: 2,023M€ | AV: 2,283M€
+                </div>
+            </div>
+
+            <div class="bg-slate-800/70 backdrop-blur border border-slate-700/70 rounded-xl p-3.5 sm:p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">Inversión / KM (2025)</span>
+                    <div class="text-lg sm:text-2xl font-black text-purple-400 mt-1">274,939 €</div>
+                </div>
+                <div class="text-[10px] sm:text-xs text-purple-300/80 font-medium mt-2 pt-2 border-t border-slate-700/50">
+                    Sobre 15,660 km de Red RFIG
+                </div>
+            </div>
+
+            <div class="bg-slate-800/70 backdrop-blur border border-slate-700/70 rounded-xl p-3.5 sm:p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">Inversión / Pasajero</span>
+                    <div class="text-lg sm:text-2xl font-black text-amber-400 mt-1">6.20 €</div>
+                </div>
+                <div class="text-[10px] sm:text-xs text-amber-300/80 font-medium mt-2 pt-2 border-t border-slate-700/50">
+                    Récord: 694.1M Viajeros (INE)
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Explanatory Note on Segregation -->
+        <div class="bg-slate-800/50 border-l-4 border-sky-500 p-4 rounded-r-xl text-xs sm:text-sm text-slate-300 space-y-1">
+            <div class="flex items-center gap-2 font-bold text-white">
+                <i class="fa-solid fa-circle-nodes text-sky-400"></i>
+                <span>Metodología de Homogeneización Nacional (ADIF + ADIF Alta Velocidad):</span>
+            </div>
+            <p class="leading-relaxed text-slate-400">
+                En 2011 y 2012, existía una única entidad (ADIF) que integraba tanto la red convencional como las obras del AVE. Con la escisión a finales de 2013 (RDL 15/2013), se creó <em>ADIF Alta Velocidad</em>. Para que la comparativa histórica sea rigurosa, esta serie suma los datos oficiales de ambas entidades públicas, evitando saltos artificiales y permitiendo comparar la inversión total real en España.
+            </p>
+        </div>
+
+        <!-- Charts Grid (Responsive on Mobile) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+            
+            <!-- Chart 1: Inversión Apilada + Constante -->
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-column text-sky-400"></i> 1. Inversión Total (ADIF + ADIF AV)
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Desglose corriente y total constante de 2025 (deflactado por IPC)</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-700/80 text-sky-300 px-2 py-0.5 rounded font-mono">M€</span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartInversion"></canvas>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-700/50 flex justify-between items-center text-[10px] text-slate-400">
+                    <span>Fuentes: CCAA Auditadas IGAE &bull; INE</span>
+                    <span class="font-bold text-slate-500">Autor: @bcnopenmind</span>
+                </div>
+            </div>
+
+            <!-- Chart 2: Inversión por Kilómetro RFIG -->
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-route text-emerald-400"></i> 2. Inversión por KM de Red (RFIG)
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Esfuerzo inversor por kilómetro en servicio (15.300 a 15.660 km)</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-700/80 text-emerald-300 px-2 py-0.5 rounded font-mono">€ / km</span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartKm"></canvas>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-700/50 flex justify-between items-center text-[10px] text-slate-400">
+                    <span>Fuentes: Declaración sobre la Red &bull; OFE / OTLE</span>
+                    <span class="font-bold text-slate-500">Autor: @bcnopenmind</span>
+                </div>
+            </div>
+
+            <!-- Chart 3: Inversión por Pasajero -->
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-users text-amber-400"></i> 3. Inversión por Pasajero Nacional
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Inversión anual por usuario frente a demanda de viajeros</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-700/80 text-amber-300 px-2 py-0.5 rounded font-mono">€ / Pax</span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartPasajero"></canvas>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-700/50 flex justify-between items-center text-[10px] text-slate-400">
+                    <span>Fuente: INEbase Tabla 24363 (Viajeros)</span>
+                    <span class="font-bold text-slate-500">Autor: @bcnopenmind</span>
+                </div>
+            </div>
+
+            <!-- Chart 4: Inflación Oficial INE -->
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-scale-balanced text-purple-400"></i> 4. Inflación (IPC) y Deflactor
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Índice medio anual (Base 2025=100) y factor multiplicador</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-700/80 text-purple-300 px-2 py-0.5 rounded font-mono">INE</span>
+                    </div>
+                    <div class="relative h-64 sm:h-72 w-full">
+                        <canvas id="chartInflacion"></canvas>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-700/50 flex justify-between items-center text-[10px] text-slate-400">
+                    <span>Fuente: INEbase Tabla 24077 (IPC General)</span>
+                    <span class="font-bold text-slate-500">Autor: @bcnopenmind</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Master Data Table Section (Mobile Responsive with Scroll Indicator) -->
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-sky-400"></i> Tabla Maestra Homogénea (2011 &ndash; 2025)
+                    </h3>
+                    <p class="text-[11px] sm:text-xs text-slate-400">Datos oficiales auditados con formatos contables, ratios y notas estructurales</p>
+                </div>
+                <div class="text-[11px] text-slate-400 sm:hidden flex items-center gap-1">
+                    <i class="fa-solid fa-arrows-left-right text-sky-400"></i> Desliza para ver la tabla completa
+                </div>
+            </div>
+
+            <!-- Scrollable container for mobile -->
+            <div class="overflow-x-auto custom-scroll">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] font-bold border-b border-slate-700">
+                        <tr>
+                            <th class="py-3 px-3 text-center">Año</th>
+                            <th class="py-3 px-3 text-right">ADIF Conv. (M€)</th>
+                            <th class="py-3 px-3 text-right">ADIF AV (M€)</th>
+                            <th class="py-3 px-3 text-right bg-sky-950/40 text-sky-300">Total Corriente</th>
+                            <th class="py-3 px-3 text-right bg-amber-950/40 text-amber-300 font-extrabold">Total Const. (2025)</th>
+                            <th class="py-3 px-3 text-right">IPC (2025)</th>
+                            <th class="py-3 px-3 text-right">Factor IPC</th>
+                            <th class="py-3 px-3 text-right">Red (km)</th>
+                            <th class="py-3 px-3 text-right text-emerald-400 font-bold">€ / km (Const.)</th>
+                            <th class="py-3 px-3 text-right">Pasajeros (M)</th>
+                            <th class="py-3 px-3 text-right text-amber-400 font-bold">€ / Pax (Const.)</th>
+                            <th class="py-3 px-3 text-left">Situación Organizativa</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/60 text-slate-300">
+
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2011</td>
+                            <td class="py-2.5 px-3 text-right">3,371.26 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300"><span class='text-slate-500 italic'>Integrada</span></td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">3,371.26 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">4,410.99 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">76.43</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.3084</td>
+                            <td class="py-2.5 px-3 text-right">15,300.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">288,299.71 €</td>
+                            <td class="py-2.5 px-3 text-right">578.67 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">7.62 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Entidad única ADIF (gestión y construcción unificada)</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2012</td>
+                            <td class="py-2.5 px-3 text-right">2,972.77 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300"><span class='text-slate-500 italic'>Integrada</span></td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">2,972.77 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">3,796.73 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">78.30</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2772</td>
+                            <td class="py-2.5 px-3 text-right">15,350.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">247,343.80 €</td>
+                            <td class="py-2.5 px-3 text-right">568.15 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">6.68 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Entidad única ADIF (incorporación activos FEVE al cierre)</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2013</td>
+                            <td class="py-2.5 px-3 text-right">308.46 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">2,540.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">2,848.46 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">3,587.43 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">79.40</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2594</td>
+                            <td class="py-2.5 px-3 text-right">15,390.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">233,101.10 €</td>
+                            <td class="py-2.5 px-3 text-right">562.88 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">6.37 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Segregación por RDL 15/2013 a 31/12/2013</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2014</td>
+                            <td class="py-2.5 px-3 text-right">312.64 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">2,192.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">2,504.64 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">3,159.18 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">79.28</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2613</td>
+                            <td class="py-2.5 px-3 text-right">15,419.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">204,888.80 €</td>
+                            <td class="py-2.5 px-3 text-right">562.78 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">5.61 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Primer ejercicio completo con balances segregados</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2015</td>
+                            <td class="py-2.5 px-3 text-right">193.23 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,781.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,974.23 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">2,502.68 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">78.88</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2677</td>
+                            <td class="py-2.5 px-3 text-right">15,438.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">162,111.50 €</td>
+                            <td class="py-2.5 px-3 text-right">566.81 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">4.42 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Balances independientes</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2016</td>
+                            <td class="py-2.5 px-3 text-right">239.61 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,105.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,344.61 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">1,707.99 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">78.72</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2702</td>
+                            <td class="py-2.5 px-3 text-right">15,457.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">110,499.42 €</td>
+                            <td class="py-2.5 px-3 text-right">568.76 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">3.00 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mínimo del ciclo inversor poscrisis</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2017</td>
+                            <td class="py-2.5 px-3 text-right">291.07 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,346.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,637.07 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">2,039.60 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">80.26</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2459</td>
+                            <td class="py-2.5 px-3 text-right">15,479.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">131,765.37 €</td>
+                            <td class="py-2.5 px-3 text-right">592.72 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">3.44 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Inicio de recuperación inversora</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2018</td>
+                            <td class="py-2.5 px-3 text-right">253.36 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,307.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,560.36 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">1,911.99 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">81.61</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2254</td>
+                            <td class="py-2.5 px-3 text-right">15,489.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">123,441.79 €</td>
+                            <td class="py-2.5 px-3 text-right">601.72 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">3.18 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Balances independientes</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2019</td>
+                            <td class="py-2.5 px-3 text-right">414.04 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,200.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,614.04 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">1,964.03 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">82.18</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2168</td>
+                            <td class="py-2.5 px-3 text-right">15,539.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">126,393.88 €</td>
+                            <td class="py-2.5 px-3 text-right">633.89 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">3.10 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Repunte en red convencional</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2020</td>
+                            <td class="py-2.5 px-3 text-right">473.29 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,273.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,746.29 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">2,131.84 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">81.91</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.2208</td>
+                            <td class="py-2.5 px-3 text-right">15,524.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">137,325.37 €</td>
+                            <td class="py-2.5 px-3 text-right">333.12 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">6.40 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Impacto COVID-19 en operaciones; mantenimiento de obras</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2021</td>
+                            <td class="py-2.5 px-3 text-right">470.08 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,090.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">1,560.08 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">1,847.38 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">84.45</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.1842</td>
+                            <td class="py-2.5 px-3 text-right">15,519.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">119,039.65 €</td>
+                            <td class="py-2.5 px-3 text-right">418.11 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">4.42 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Llegada AV a Galicia; inicio fondos PRTR NextGen</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2022</td>
+                            <td class="py-2.5 px-3 text-right">660.31 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,553.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">2,213.31 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">2,418.02 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">91.53</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.0925</td>
+                            <td class="py-2.5 px-3 text-right">15,820.8 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">152,837.99 €</td>
+                            <td class="py-2.5 px-3 text-right">553.35 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">4.37 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Red de Alta Velocidad supera los 4.000 km</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2023</td>
+                            <td class="py-2.5 px-3 text-right">1,118.15 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">1,974.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">3,092.15 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">3,262.88 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">94.77</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.0552</td>
+                            <td class="py-2.5 px-3 text-right">15,648.5 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">208,510.94 €</td>
+                            <td class="py-2.5 px-3 text-right">665.20 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">4.91 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Fuerte aceleración Plan de Cercanías y PRTR</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2024</td>
+                            <td class="py-2.5 px-3 text-right">1,484.04 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">2,459.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">3,943.04 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">4,048.45 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">97.40</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.0267</td>
+                            <td class="py-2.5 px-3 text-right">15,654.1 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">258,619.11 €</td>
+                            <td class="py-2.5 px-3 text-right">690.40 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">5.86 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Récord histórico de inversión conjunta</td>
+                        </tr>
+    
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2025</td>
+                            <td class="py-2.5 px-3 text-right">2,022.54 M€</td>
+                            <td class="py-2.5 px-3 text-right text-sky-300">2,283.00 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-white bg-sky-950/20">4,305.54 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">4,305.54 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">100.00</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-400">&times;1.0000</td>
+                            <td class="py-2.5 px-3 text-right">15,660.0 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">274,938.70 €</td>
+                            <td class="py-2.5 px-3 text-right">694.11 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-amber-400">6.20 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Consolidación histórica (> 4.300 M€ conjuntos)</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="p-3 bg-slate-900/60 border-t border-slate-700/60 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-400 gap-2">
+                <span>Nota: En 2025 las cantidades corrientes y constantes coinciden al ser el año base de referencia (IPC 2025 = 100,00).</span>
+                <span class="font-bold text-sky-400">Autor del informe: @bcnopenmind</span>
+            </div>
+        </div>
+
+        <!-- Official Sources Repositories -->
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-6 shadow-xl space-y-3">
+            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-landmark text-sky-400"></i> Fuentes Oficiales y Portales de Cotejo
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                
+                <a href="https://www.adif.es/sobre-adif/conoce-adif/cuentas-anuales" target="_blank" 
+                   class="p-3 bg-slate-900/50 hover:bg-slate-900 border border-slate-700/60 rounded-xl transition flex flex-col justify-between group">
+                    <div>
+                        <strong class="text-white block group-hover:text-sky-400 transition font-bold">ADIF (Convencional)</strong>
+                        <p class="text-slate-400 text-[11px] mt-1">Cuentas anuales auditadas por la IGAE (2011-2025).</p>
+                    </div>
+                    <span class="text-sky-400 text-[11px] font-semibold mt-2 flex items-center gap-1">
+                        adif.es <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <a href="https://www.adifaltavelocidad.es/conoce-adif-av/cuentas-anuales" target="_blank" 
+                   class="p-3 bg-slate-900/50 hover:bg-slate-900 border border-slate-700/60 rounded-xl transition flex flex-col justify-between group">
+                    <div>
+                        <strong class="text-white block group-hover:text-sky-400 transition font-bold">ADIF Alta Velocidad</strong>
+                        <p class="text-slate-400 text-[11px] mt-1">Cuentas anuales oficiales de alta velocidad desde 2014.</p>
+                    </div>
+                    <span class="text-sky-400 text-[11px] font-semibold mt-2 flex items-center gap-1">
+                        adifaltavelocidad.es <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <a href="https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/24077" target="_blank" 
+                   class="p-3 bg-slate-900/50 hover:bg-slate-900 border border-slate-700/60 rounded-xl transition flex flex-col justify-between group">
+                    <div>
+                        <strong class="text-white block group-hover:text-sky-400 transition font-bold">INE &bull; Inflación (IPC)</strong>
+                        <p class="text-slate-400 text-[11px] mt-1">Serie Histórica del IPC General Nacional (Tabla 24077).</p>
+                    </div>
+                    <span class="text-sky-400 text-[11px] font-semibold mt-2 flex items-center gap-1">
+                        ine.es API <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <a href="https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/24363" target="_blank" 
+                   class="p-3 bg-slate-900/50 hover:bg-slate-900 border border-slate-700/60 rounded-xl transition flex flex-col justify-between group">
+                    <div>
+                        <strong class="text-white block group-hover:text-sky-400 transition font-bold">INE &bull; Pasajeros</strong>
+                        <p class="text-slate-400 text-[11px] mt-1">Estadística de Transporte Ferroviario (Tabla 24363).</p>
+                    </div>
+                    <span class="text-sky-400 text-[11px] font-semibold mt-2 flex items-center gap-1">
+                        ine.es API <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mobile-Optimized Footer with Prominent Author Branding -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-8 px-4 text-center space-y-3">
+        <div class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 px-4 py-2 rounded-full shadow-inner">
+            <i class="fa-solid fa-code text-sky-400 text-xs"></i>
+            <span class="text-xs text-slate-400">Informe y Dashboard desarrollados por:</span>
+            <strong class="text-xs font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400">
+                autor: @bcnopenmind
+            </strong>
+        </div>
+        <p class="text-[11px] text-slate-400 max-w-xl mx-auto leading-relaxed">
+            Consolidación oficial a partir de las cuentas anuales de ADIF (carpeta local), ADIF Alta Velocidad, los registros abiertos del INE y el Ministerio de Transportes y Movilidad Sostenible.
+        </p>
+    </footer>
+
+    <!-- Chart.js Mobile & Desktop Config -->
+    <script>
+        const years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+        const adifConv = [3371.26, 2972.77, 308.46, 312.64, 193.23, 239.61, 291.07, 253.36, 414.04, 473.29, 470.08, 660.31, 1118.15, 1484.04, 2022.54];
+        const adifAv = [0.0, 0.0, 2540.0, 2192.0, 1781.0, 1105.0, 1346.0, 1307.0, 1200.0, 1273.0, 1090.0, 1553.0, 1974.0, 2459.0, 2283.0];
+        const totalConstante = [4410.99, 3796.73, 3587.43, 3159.18, 2502.68, 1707.99, 2039.6, 1911.99, 1964.03, 2131.84, 1847.38, 2418.02, 3262.88, 4048.45, 4305.54];
+        const invPorKm = [288299.71, 247343.8, 233101.1, 204888.8, 162111.5, 110499.42, 131765.37, 123441.79, 126393.88, 137325.37, 119039.65, 152837.99, 208510.94, 258619.11, 274938.7];
+        const invPorPax = [7.62, 6.68, 6.37, 5.61, 4.42, 3.0, 3.44, 3.18, 3.1, 6.4, 4.42, 4.37, 4.91, 5.86, 6.2];
+        const ipc = [76.43, 78.3, 79.4, 79.28, 78.88, 78.72, 80.26, 81.61, 82.18, 81.91, 84.45, 91.53, 94.77, 97.4, 100.0];
+        const deflactor = [1.3084, 1.2772, 1.2594, 1.2613, 1.2677, 1.2702, 1.2459, 1.2254, 1.2168, 1.2208, 1.1842, 1.0925, 1.0552, 1.0267, 1.0];
+
+        // Mobile font size helper
+        const isMobile = window.innerWidth < 640;
+        const tickFontSize = isMobile ? 9 : 11;
+
+        // Chart 1
+        new Chart(document.getElementById('chartInversion'), {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Total Constante 2025',
+                        data: totalConstante,
+                        borderColor: '#f97316',
+                        borderWidth: 2.5,
+                        pointRadius: isMobile ? 2 : 4,
+                        pointBackgroundColor: '#f97316',
+                        tension: 0.2,
+                        order: 1
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Convencional',
+                        data: adifConv,
+                        backgroundColor: '#0284c7',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 2
+                    },
+                    {
+                        type: 'bar',
+                        label: 'ADIF Alta Velocidad',
+                        data: adifAv,
+                        backgroundColor: '#38bdf8',
+                        stack: 'corriente',
+                        order: 2,
+                        borderRadius: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 12 }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, maxRotation: 45 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v + ' M€' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        // Chart 2
+        new Chart(document.getElementById('chartKm'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Inversión Constante por KM (€/km)',
+                    data: invPorKm,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                    borderWidth: 2.5,
+                    pointRadius: isMobile ? 2 : 4,
+                    fill: true,
+                    tension: 0.25
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 12 }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, maxRotation: 45 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => (v/1000).toFixed(0) + 'k €' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        // Chart 3
+        new Chart(document.getElementById('chartPasajero'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Inversión por Pasajero (€/pax)',
+                    data: invPorPax,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                    borderWidth: 2.5,
+                    pointRadius: isMobile ? 2 : 4,
+                    fill: true,
+                    tension: 0.25
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 12 }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, maxRotation: 45 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v + ' €' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    }
+                }
+            }
+        });
+
+        // Chart 4
+        new Chart(document.getElementById('chartInflacion'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Índice IPC (Base 2025=100)',
+                        data: ipc,
+                        borderColor: '#8b5cf6',
+                        borderWidth: 2,
+                        pointRadius: isMobile ? 2 : 3,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'Factor Deflactor',
+                        data: deflactor,
+                        borderColor: '#d97706',
+                        borderDash: [4, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        yAxisID: 'y1',
+                        tension: 0.2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 12 }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize }, maxRotation: 45 }
+                    },
+                    y: {
+                        ticks: { color: '#94a3b8', font: { size: tickFontSize } },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    },
+                    y1: {
+                        position: 'right',
+                        ticks: { color: '#d97706', font: { size: tickFontSize } },
+                        grid: { drawOnChartArea: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
