@@ -380,6 +380,339 @@
             </div>
         </div>
 
+        
+        <!-- SECCIÓN DE GASTOS DE MANTENIMIENTO ADIF (2011 - 2025) -->
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
+            
+            <!-- Header Sección -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-700">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-wrench"></i> Auditoría OPEX &bull; Cuentas Oficiales
+                    </div>
+                    <h3 class="text-base sm:text-2xl font-black text-white flex items-center gap-2 mt-1">
+                        Evolución de los Gastos de Mantenimiento Ferroviario (2011 &ndash; 2025)
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-3xl">
+                        Partida contable oficial: <em>«Reparaciones y conservación de la infraestructura»</em> y <em>«Otras reparaciones y conservación»</em> de la Memoria de Cuentas Anuales de ADIF auditadas por la IGAE, ajustadas con el IPC oficial del INE.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 self-stretch sm:self-auto justify-end">
+                    <button onclick="toggleVistaMantenimiento()" class="flex-1 sm:flex-none justify-center bg-slate-700 hover:bg-slate-600 active:scale-95 text-white font-semibold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5 border border-slate-600">
+                        <i class="fa-solid fa-images text-xs"></i> <span id="txtBtnVistaMant">Ver Imagen HD</span>
+                    </button>
+                    <a href="graficos/6_evolucion_gastos_mantenimiento_2011_2025.png" download class="flex-1 sm:flex-none justify-center bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-download text-xs"></i> <span>Descargar Gráfico</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Cards de Mantenimiento -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="bg-slate-900/80 p-3 sm:p-4 rounded-xl border border-slate-700/60 space-y-1">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gasto Total 2025</span>
+                    <div class="text-lg sm:text-2xl font-black text-sky-400">655.80 M€</div>
+                    <p class="text-[10px] text-emerald-400 font-semibold">+58.6% vs 2011 (corriente)</p>
+                </div>
+                <div class="bg-slate-900/80 p-3 sm:p-4 rounded-xl border border-slate-700/60 space-y-1">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gasto Constante 2025</span>
+                    <div class="text-lg sm:text-2xl font-black text-amber-400">655.80 M€</div>
+                    <p class="text-[10px] text-amber-300 font-semibold">+21.2% real vs 2011 (541.1 M€)</p>
+                </div>
+                <div class="bg-slate-900/80 p-3 sm:p-4 rounded-xl border border-slate-700/60 space-y-1">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gasto por km (2025)</span>
+                    <div class="text-lg sm:text-2xl font-black text-emerald-400">56,185 €/km</div>
+                    <p class="text-[10px] text-emerald-300 font-semibold">+28.7% real vs 2011 (43,640 €)</p>
+                </div>
+                <div class="bg-slate-900/80 p-3 sm:p-4 rounded-xl border border-slate-700/60 space-y-1">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gasto por Viajero</span>
+                    <div class="text-lg sm:text-2xl font-black text-rose-400">0.94 €/pax</div>
+                    <p class="text-[10px] text-slate-400 font-semibold">Estable (pico 1.58 € en COVID 2020)</p>
+                </div>
+            </div>
+
+            <!-- Contenedor Interactivo de 3 Gráficos Chart.js -->
+            <div id="contenedorInteractivoMant" class="space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    
+                    <!-- Subchart 1: Total Corriente vs Constante -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-700/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-column text-sky-400"></i> A) Gasto Total en Mantenimiento
+                            </h4>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">M€ Anuales</span>
+                        </div>
+                        <div class="relative h-64 sm:h-72">
+                            <canvas id="chartMantTotal"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Subchart 2: Por km de Red -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-700/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-road text-emerald-400"></i> B) Esfuerzo por km de Red
+                            </h4>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">€ / km</span>
+                        </div>
+                        <div class="relative h-64 sm:h-72">
+                            <canvas id="chartMantKm"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Subchart 3: Por Viajero -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-700/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                                <i class="fa-solid fa-users text-rose-400"></i> C) Gasto por Viajero
+                            </h4>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">€ / pax</span>
+                        </div>
+                        <div class="relative h-64 sm:h-72">
+                            <canvas id="chartMantPax"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Contenedor Imagen Estática HD (Oculto por defecto) -->
+            <div id="contenedorImagenMantHD" class="hidden bg-slate-900/90 p-3 rounded-xl border border-slate-700/80">
+                <img src="graficos/6_evolucion_gastos_mantenimiento_2011_2025.png" alt="Evolución Gastos de Mantenimiento ADIF" class="w-full rounded-lg shadow-2xl border border-slate-800">
+            </div>
+
+            <!-- Tabla Detallada de Gastos de Mantenimiento -->
+            <div class="border border-slate-700/80 rounded-xl overflow-hidden bg-slate-900/60">
+                <div class="p-3 bg-slate-900/90 border-b border-slate-700/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-table-list text-amber-400"></i> Serie Histórica de Gastos de Mantenimiento de ADIF (2011 &ndash; 2025)
+                    </h4>
+                    <span class="text-[10px] text-slate-400">Fuentes: Cuentas Anuales IGAE, IPC INE e INE Pasajeros</span>
+                </div>
+                
+                <div class="overflow-x-auto custom-scroll">
+                    <table class="w-full text-left text-xs whitespace-nowrap">
+                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-bold border-b border-slate-800">
+                            <tr>
+                                <th class="py-2.5 px-3 text-center">Año</th>
+                                <th class="py-2.5 px-3 text-right">Rep. Infraestructura</th>
+                                <th class="py-2.5 px-3 text-right">Otras Reparaciones</th>
+                                <th class="py-2.5 px-3 text-right bg-sky-950/40 text-sky-300">Total Corriente</th>
+                                <th class="py-2.5 px-3 text-right bg-amber-950/40 text-amber-300 font-extrabold">Total Const. (2025)</th>
+                                <th class="py-2.5 px-3 text-right">Red (km)</th>
+                                <th class="py-2.5 px-3 text-right text-emerald-400 font-bold">€ / km (Const.)</th>
+                                <th class="py-2.5 px-3 text-right">Pasajeros (M)</th>
+                                <th class="py-2.5 px-3 text-right text-rose-400 font-bold">€ / Pax (Const.)</th>
+                                <th class="py-2.5 px-3 text-left">Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-300">
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2011</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">399.09 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">14.49 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">413.58 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">541.14 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">12.400 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">43.640 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">578.67 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.94 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Entidad única ADIF antes de segregación</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2012</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">384.00 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">12.95 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">396.95 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">506.97 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">12.350 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">41.050 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">568.15 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.89 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Incorporación red métrica FEVE</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2013</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">379.18 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">11.21 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">390.39 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">491.67 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">12.285 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">40.022 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">562.88 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.87 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2014</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">369.26 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">10.05 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">379.31 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">478.44 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">12.050 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">39.704 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">562.78 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.85 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2015</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">357.76 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">10.80 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">368.56 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">467.22 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.980 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">39.000 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">566.81 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.82 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2016</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">360.25 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">10.91 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">371.16 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">471.47 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.950 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">39.453 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">568.76 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.83 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2017</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">348.95 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">25.70 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">374.65 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">466.76 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.920 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">39.158 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">592.72 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.79 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2018</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">373.71 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">25.20 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">398.92 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">488.81 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.900 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">41.077 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">601.72 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.81 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2019</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">409.94 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">26.10 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">436.03 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">530.58 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.880 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">44.662 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">633.89 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.84 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2020</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">400.30 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">30.50 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">430.80 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">525.91 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.860 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">44.343 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">333.12 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">1.58 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Pico ratio viajero: caída demanda COVID (333M pax)</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2021</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">459.73 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">27.82 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">487.54 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">577.33 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.840 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">48.761 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">418.11 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">1.38 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2022</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">495.48 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">26.23 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">521.71 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">569.97 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.820 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">48.221 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">553.35 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">1.03 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2023</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">551.47 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">31.63 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">583.10 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">615.29 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.720 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">52.499 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">665.20 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.92 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2024</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">593.06 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">32.72 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">625.79 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">642.52 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.690 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">54.963 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">690.40 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.93 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Mantenimiento ordinario red ADIF</td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/40 transition">
+                            <td class="py-2.5 px-3 font-bold text-white text-center">2025</td>
+                            <td class="py-2.5 px-3 text-right text-slate-300">619.25 M€</td>
+                            <td class="py-2.5 px-3 text-right text-slate-400">36.54 M€</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-sky-300 bg-sky-950/20">655.80 M€</td>
+                            <td class="py-2.5 px-3 text-right font-black text-amber-300 bg-amber-950/20">655.80 M€</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">11.672 km</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">56.185 €</td>
+                            <td class="py-2.5 px-3 text-right font-mono text-slate-300">694.11 M</td>
+                            <td class="py-2.5 px-3 text-right font-bold text-rose-400">0.94 €</td>
+                            <td class="py-2.5 px-3 text-left text-[11px] text-slate-400">Año base deflactación (100,00)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notas de Metodología y Auditoría -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-sky-400 block font-bold text-xs"><i class="fa-solid fa-book-open"></i> Definición Contable</strong>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">Incluye las partidas de <em>«Reparaciones y conservación de la infraestructura»</em> y <em>«Otras reparaciones»</em> auditadas por la IGAE en la nota de Servicios Exteriores de la Memoria de ADIF.</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-amber-400 block font-bold text-xs"><i class="fa-solid fa-calculator"></i> Ajuste por Inflación</strong>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">Los importes constantes están deflactados mediante el IPC medio anual del INE base 2025. El esfuerzo presupuestario real creció de 541 M€ en 2011 a 655,8 M€ en 2025 (+21,2%).</p>
+                </div>
+                <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/60 space-y-1">
+                    <strong class="text-rose-400 block font-bold text-xs"><i class="fa-solid fa-virus-slash"></i> Distorsión COVID-19 (2020)</strong>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">El ratio por viajero salta a 1,58 € en 2020 debido a que los costes de mantenimiento continuaron ejecutándose mientras la movilidad colapsó a 333 millones de pasajeros.</p>
+                </div>
+            </div>
+
+        </div>
+
+
         <!-- Master Data Table Section (Mobile Responsive with Scroll Indicator) -->
         <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl shadow-xl overflow-hidden">
             <div class="p-4 sm:p-5 border-b border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
@@ -1075,6 +1408,153 @@
             const contInt = document.getElementById('contenedorInteractivo');
             const contImg = document.getElementById('contenedorImagenHD');
             const txtBtn = document.getElementById('txtBtnVista');
+            if (contInt.classList.contains('hidden')) {
+                contInt.classList.remove('hidden');
+                contImg.classList.add('hidden');
+                txtBtn.textContent = 'Ver Imagen HD';
+            } else {
+                contInt.classList.add('hidden');
+                contImg.classList.remove('hidden');
+                txtBtn.textContent = 'Ver Interactivo';
+            }
+        }
+
+    
+        // --- SECCIÓN MANTENIMIENTO DATA & CHARTS ---
+        const mantCorr = [413.58, 396.95, 390.39, 379.31, 368.56, 371.16, 374.65, 398.92, 436.03, 430.80, 487.54, 521.71, 583.10, 625.79, 655.80];
+        const mantConst = [541.14, 506.97, 491.67, 478.44, 467.22, 471.47, 466.76, 488.81, 530.58, 525.91, 577.33, 569.97, 615.29, 642.52, 655.80];
+        const mantKmConst = [43640, 41050, 40022, 39704, 39000, 39453, 39158, 41077, 44662, 44343, 48761, 48221, 52499, 54963, 56185];
+        const mantKmCorr = [33353, 32142, 31788, 31517, 30714, 31060, 31430, 33523, 36703, 36324, 41177, 44138, 49752, 53532, 56185];
+        const mantPaxConst = [0.94, 0.89, 0.87, 0.85, 0.82, 0.83, 0.79, 0.81, 0.84, 1.58, 1.38, 1.03, 0.92, 0.93, 0.94];
+        const mantPaxCorr = [0.71, 0.70, 0.69, 0.67, 0.65, 0.65, 0.63, 0.66, 0.69, 1.29, 1.17, 0.94, 0.88, 0.91, 0.94];
+
+        // Chart Mant 1: Total
+        new Chart(document.getElementById('chartMantTotal'), {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Constante 2025 (M€)',
+                        data: mantConst,
+                        borderColor: '#f97316',
+                        borderWidth: 2.2,
+                        pointBackgroundColor: '#f97316',
+                        pointRadius: isMobile ? 2.5 : 3.5,
+                        tension: 0.2,
+                        order: 1
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Corriente (M€)',
+                        data: mantCorr,
+                        backgroundColor: '#0284c7',
+                        borderRadius: 3,
+                        order: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 10 } },
+                    tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw.toFixed(2)} M€` } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8', font: { size: tickFontSize } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { beginAtZero: true, max: 750, ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v + ' M€' }, grid: { color: 'rgba(255,255,255,0.06)' } }
+                }
+            }
+        });
+
+        // Chart Mant 2: Km
+        new Chart(document.getElementById('chartMantKm'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Constante (€/km)',
+                        data: mantKmConst,
+                        borderColor: '#10b981',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#10b981',
+                        pointRadius: isMobile ? 2.5 : 4,
+                        tension: 0.25
+                    },
+                    {
+                        label: 'Corriente (€/km)',
+                        data: mantKmCorr,
+                        borderColor: '#38bdf8',
+                        borderWidth: 1.8,
+                        borderDash: [4, 4],
+                        pointBackgroundColor: '#38bdf8',
+                        pointRadius: isMobile ? 2 : 3,
+                        tension: 0.25
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 10 } },
+                    tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw.toLocaleString()} €/km` } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8', font: { size: tickFontSize } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { min: 25000, max: 62000, ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v.toLocaleString() + ' €' }, grid: { color: 'rgba(255,255,255,0.06)' } }
+                }
+            }
+        });
+
+        // Chart Mant 3: Pax
+        new Chart(document.getElementById('chartMantPax'), {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Constante (€/pax)',
+                        data: mantPaxConst,
+                        borderColor: '#f43f5e',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#f43f5e',
+                        pointRadius: isMobile ? 2.5 : 4,
+                        tension: 0.25
+                    },
+                    {
+                        label: 'Corriente (€/pax)',
+                        data: mantPaxCorr,
+                        borderColor: '#fb7185',
+                        borderWidth: 1.8,
+                        borderDash: [4, 4],
+                        pointBackgroundColor: '#fb7185',
+                        pointRadius: isMobile ? 2 : 3,
+                        tension: 0.25
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#94a3b8', font: { size: tickFontSize }, boxWidth: 10 } },
+                    tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw.toFixed(2)} €/viajero` } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8', font: { size: tickFontSize } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    y: { min: 0.5, max: 1.9, ticks: { color: '#94a3b8', font: { size: tickFontSize }, callback: v => v.toFixed(2) + ' €' }, grid: { color: 'rgba(255,255,255,0.06)' } }
+                }
+            }
+        });
+
+        function toggleVistaMantenimiento() {
+            const contInt = document.getElementById('contenedorInteractivoMant');
+            const contImg = document.getElementById('contenedorImagenMantHD');
+            const txtBtn = document.getElementById('txtBtnVistaMant');
             if (contInt.classList.contains('hidden')) {
                 contInt.classList.remove('hidden');
                 contImg.classList.add('hidden');
